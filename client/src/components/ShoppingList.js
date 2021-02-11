@@ -1,39 +1,26 @@
-import React, { useState, useEffect, useReducer } from 'react'
+import React from 'react'
 import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import {v1 as uuid} from 'uuid';
 import { connect } from 'react-redux';
-import { getItems } from '../actions/itemActions';
+import { getItems, deleteItem } from '../actions/itemActions';
 import PropTypes from 'prop-types';
 
 const ShoppingList = (props) => {
-	const [items, setItems] = useState('')
-	
-	useEffect( () => {
-		props.getItems();
-	}, [])
+	//this is the key declaration!!
+	const { items } = props.item
+
   
 // 	props.getItems();
 // 	const { items } = props.item;
-	console.log(`items are: ${props.items}`)
+	console.log(`items are: ${JSON.stringify(items)}`)
   
   return(
     <Container>
-			<Button
-        color="dark"
-        style={{ marginBottom: '2rem' }}
-        onClick={ () => {
-          const name = prompt('Enter Item');
-          if(name){
-            //setItems([...props.items, { id: uuid(), name }])
-          }
-				}}
-       >Add Item
-		</Button>
+
 
 			<ListGroup>
 				<TransitionGroup className="shopping-list">
-					{props.items.map( ({ id, name}) => (
+					{items.map( ({ id, name}) => (
 						<CSSTransition key={id} timeout={500} classNames="fade">
 							<ListGroupItem>
 								<Button
@@ -41,7 +28,7 @@ const ShoppingList = (props) => {
 									color="danger"
 									size="sm"
 									onClick={() => {
-										//setItems(props.items.filter(item => item.id !== id))
+										props.deleteItem(id)
 									}}
 								>&times;</Button>
 								
@@ -66,4 +53,5 @@ const mapStateToProps = (state) => ({
 	item: state.item
 })
 
-export default connect(mapStateToProps, { getItems })(ShoppingList);
+export default connect(mapStateToProps, 
+		{ getItems, deleteItem })(ShoppingList);
