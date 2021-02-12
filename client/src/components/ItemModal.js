@@ -12,7 +12,6 @@ import {
 import { connect } from 'react-redux';
 import { addItem } from '../actions/itemActions'
 
-import {v1 as uuid} from 'uuid';
 
 const ItemModal = (props) => {
 	
@@ -29,7 +28,6 @@ const ItemModal = (props) => {
 		e.preventDefault();
 		console.log(`name is: ${JSON.stringify(name)}`)
 		const newItem = {
-			id: uuid(),
 			name: name.name
 		}
 		props.addItem(newItem)
